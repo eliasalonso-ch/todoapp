@@ -6,6 +6,7 @@ from django.contrib.auth import get_user_model
 import logging
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
+from .tasks import send_welcome_email
 
 logger = logging.getLogger(__name__)
 
@@ -36,3 +37,5 @@ class RegisterView(APIView):
         user = User.objects.create_user(username=username, password=password)
         logger.info(f'New user registered: {username}')
         return Response({'message': 'User registered successfully.'}, status=status.HTTP_201_CREATED)
+    
+        send_welcome_email.delay(username)
