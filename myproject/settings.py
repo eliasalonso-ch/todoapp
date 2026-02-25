@@ -188,22 +188,25 @@ LOGGING = {
         },
     },
     'handlers': {
-        'file': {
-            'level': 'WARNING',
-            'class': 'logging.FileHandler',
-            'filename': BASE_DIR / 'logs/django.log',
-            'formatter': 'verbose',
-        },
         'console': {
             'class': 'logging.StreamHandler',
             'formatter': 'verbose',
         },
     },
     'root': {
-        'handlers': ['file', 'console'],
+        'handlers': ['console'],
         'level': 'WARNING',
     },
 }
+
+if DEBUG:
+    LOGGING['handlers']['file'] = {
+        'level': 'WARNING',
+        'class': 'logging.FileHandler',
+        'filename': BASE_DIR / 'logs/django.log',
+        'formatter': 'verbose',
+    }
+    LOGGING['root']['handlers'].append('file')
 
 CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL', 'redis://localhost:6379/0')
 CELERY_RESULT_BACKEND = 'django-db'
