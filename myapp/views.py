@@ -22,7 +22,7 @@ class TaskViewSet(viewsets.ModelViewSet):
             logger.info(f'Tasks fetched by user {user.username}')
             return Task.objects.filter(user=user).order_by('-created_at')
         logger.warning('Unauthenticated user attempted to access tasks')
-        return Task.objects.none()
+        return Task.objects.select_related('user').filter(user=user).order_by('-created_at')
     
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
