@@ -7,6 +7,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-EXPOSE 8000
+EXPOSE 10000
 
-CMD ["sh", "-c", "python manage.py migrate && python manage.py collectstatic --noinput && gunicorn myproject.wsgi --bind 0.0.0.0:$PORT"]
+CMD ["gunicorn", "myproject.wsgi:application", "--bind", "0.0.0.0:10000"]
