@@ -9,4 +9,4 @@ COPY . .
 
 EXPOSE 10000
 
-CMD ["gunicorn", "myproject.wsgi:application", "--bind", "0.0.0.0:10000"]
+CMD ["sh", "-c", "python manage.py migrate && python manage.py collectstatic --noinput && gunicorn myproject.wsgi:application --bind 0.0.0.0:10000"]
